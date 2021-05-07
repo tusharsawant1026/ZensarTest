@@ -73,8 +73,8 @@ class ZensarTestApplicationTests {
 	public void updateTest()
 	{	
 		Posts p=postsService.getById(3);
-		p.setTitle("test");
-		p.setBody("test");
+		p.setTitle("1800Flowers");
+		p.setBody("1800Flowers");
 		
 		postsService.savedata(p,3);
 		 assertEquals("test", p.getTitle());
