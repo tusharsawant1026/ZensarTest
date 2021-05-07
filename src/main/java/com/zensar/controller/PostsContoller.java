@@ -53,6 +53,8 @@ public class PostsContoller {
 			@RequestBody Posts postsD)
 	{
 		Posts update=service.savedata(postsD, id);	
+		System.out.println("Modification Done" +update );
+
 		return update;
 	}
 	
