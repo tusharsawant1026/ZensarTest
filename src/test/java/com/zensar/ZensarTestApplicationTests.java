@@ -76,7 +76,7 @@ class ZensarTestApplicationTests {
 		p.setTitle("1800Flowers");
 		p.setBody("1800Flowers");
 		
-		postsService.savedata(p,3);
+		 postsService.savedata(p,3);
 		 assertEquals("test", p.getTitle());
          assertEquals("test", p.getBody());
 	

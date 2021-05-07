@@ -2,11 +2,16 @@ package com.zensar.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,24 +19,28 @@ import com.sun.el.stream.Stream;
 import com.zensar.Model.Posts;
 
 @org.springframework.stereotype.Service
-public class PostsService implements CommandLineRunner {
+public class PostsService  {
 
-	private static List<Posts> posts;
+	private static Posts[] posts;
 	
-	@Override
-	public void run(String... args) throws Exception {
-	
+	@Autowired
+	private RestTemplate restTemplate;
+
+	@Bean
+	public void getalldata()
+	{
+		 ResponseEntity<Posts[]> responseEntity = 
+	        	    restTemplate.getForEntity("http://jsonplaceholder.typicode.com/posts",Posts[].class); 
 		
-       ObjectMapper objectMapper = new ObjectMapper();
-
-            posts =  objectMapper.readValue(new File("src/main/resources/posts.json"),
-            		new TypeReference<List<Posts>>() {}
-            		);	
-	}
+		  Posts[] postArray = responseEntity.getBody();
 	
+		  posts=postArray;
+	}
+	    
+
 	public Posts getById(long id)
 	{
-	 	 	return	posts.stream()
+	 	 	return	Arrays.stream(posts)
 				  .filter(post -> id==(post.getId()))
 				  .findFirst().get();
 	}
@@ -40,11 +49,8 @@ public class PostsService implements CommandLineRunner {
 	
 	public Integer count()
 	{
-			List<Posts> list=posts;
-		
-			Map<Long, List<Posts>> map	= list.stream()
-					.collect(Collectors.groupingBy(Posts::getUserId));
-		
+			Map<Long, List<Posts>> map	=  Arrays.stream(posts)
+					.collect(Collectors.groupingBy(Posts::getUserId));	
 			return map.size();	
 	}
 	
@@ -55,10 +61,20 @@ public class PostsService implements CommandLineRunner {
 		p.setId(post.getId());
 		p.setTitle(post.getTitle());
 		p.setBody(post.getBody());
-	    Posts update=	posts.set((int) getById(id).getId(), p);
-	    return update;
+		
+		Arrays.asList(posts).add((int) getById(id).getId(), p);	
+	    return p;
+	}
+
+
+	public List<Long> unique() {
+		// TODO Auto-generated method stub
+		Map<Long, List<Posts>> map	=  Arrays.stream(posts)
+				.collect(Collectors.groupingBy(Posts::getUserId));
+	     
+	     ArrayList<Long> keyList = new ArrayList<Long>(map.keySet());
+	     
+		 return keyList;
 	}
 	
-
-
 }
