@@ -36,6 +36,8 @@ public class PostsService implements CommandLineRunner {
 				  .findFirst().get();
 	}
 	
+	
+	
 	public Integer count()
 	{
 			List<Posts> list=posts;
@@ -45,6 +47,18 @@ public class PostsService implements CommandLineRunner {
 		
 			return map.size();	
 	}
+	
+	public Posts savedata(Posts post, long id )
+	{
+		Posts p=new Posts();
+		p.setUserId(post.getUserId());
+		p.setId(post.getId());
+		p.setTitle(post.getTitle());
+		p.setBody(post.getBody());
+	    Posts update=	posts.set((int) getById(id).getId(), p);
+	    return update;
+	}
+	
 
 
 }

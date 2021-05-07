@@ -33,14 +33,8 @@ public class PostsContoller {
 	public Posts update(@PathVariable (value ="id") long id , 
 			@RequestBody Posts postsD)
 	{
-		Posts posts = service.getById(id);
-		
-		posts.setUserId(postsD.getUserId());
-		posts.setId(postsD.getId());
-		posts.setTitle(postsD.getTitle());
-		posts.setBody(postsD.getBody());
-		
-		return posts;
+		Posts update=service.savedata(postsD, id);	
+		return update;
 	}
 	
 }
