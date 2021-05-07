@@ -42,6 +42,8 @@ class ZensarTestApplicationTests {
     public void init() {
         MockitoAnnotations.initMocks(this);
     }
+
+	//success test
 	
 	@Test
     public void getCountTest()
@@ -68,6 +70,7 @@ class ZensarTestApplicationTests {
         assertEquals(2, cout);
         verify(postsService, times(1)).count();
     }
+	//failure test
 	
 	@Test
 	public void updateTest()
